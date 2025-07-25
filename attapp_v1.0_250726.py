@@ -10,15 +10,16 @@ import os
 
 
 # ---------- 폰트 설정 ----------
-# ✅ 폰트 경로 지정
+# 1️⃣ 폰트 경로
 font_path = os.path.join("fonts", "NanumSquareB.ttf")
 
-# ✅ matplotlib용 폰트 강제 등록
+# 2️⃣ 등록 + 강제 지정
 if os.path.exists(font_path):
     fm.fontManager.addfont(font_path)
-    plt.rcParams['font.family'] = ['NanumSquare']  # 👈 여기 직접 명시!
+    nanum_font = fm.FontProperties(fname=font_path)
+    plt.rcParams['font.family'] = nanum_font.get_name()
 else:
-    plt.rcParams['font.family'] = ['DejaVu Sans']
+    plt.rcParams['font.family'] = 'DejaVu Sans'
 
 plt.rcParams['axes.unicode_minus'] = False
 
