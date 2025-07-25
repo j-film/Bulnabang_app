@@ -10,25 +10,24 @@ import os
 
 
 # ---------- 폰트 설정 ----------
-#font_path = "C:/Windows/Fonts/malgun.ttf"  
-#font_prop = fm.FontProperties(fname=font_path)
-#plt.rcParams['font.family'] = font_prop.get_name()
-#plt.rcParams['axes.unicode_minus'] = False
-#sns.set(style="whitegrid")
+# ✅ 폰트 경로 지정
+font_path = os.path.join("fonts", "NanumSquareB.ttf")
 
-font_path = os.path.join('fonts', 'NanumSquareB.ttf')
+# ✅ matplotlib용 폰트 강제 등록
 if os.path.exists(font_path):
-    font_prop = fm.FontProperties(fname=font_path)
-    plt.rcParams['font.family'] = font_prop.get_name()
+    fm.fontManager.addfont(font_path)
+    plt.rcParams['font.family'] = ['NanumSquare']  # 👈 여기 직접 명시!
 else:
-    plt.rcParams['font.family'] = 'DejaVu Sans'
+    plt.rcParams['font.family'] = ['DejaVu Sans']
 
 plt.rcParams['axes.unicode_minus'] = False
 
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
 st.title("🤸‍♀️ 불나방 대시보드 📊")
+
 st.write("📌 적용된 폰트:", plt.rcParams['font.family'])
+st.write("📁 현재 폰트 경로 존재?:", os.path.exists("fonts/NanumSquareB.ttf"))
 
 # 🔧 스타일 설정 슬라이더
 st.sidebar.header("⚙️ 그래프 스타일 설정")
