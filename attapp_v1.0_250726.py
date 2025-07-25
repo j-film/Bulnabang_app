@@ -42,7 +42,7 @@ all_members = [name.strip() for name in custom_order.split(",") if name.strip() 
 # 내장된 기본 CSV 파일
 @st.cache_data
 def load_default_csv():
-    return pd.read_csv("attendance_summary_final_v5.csv", encoding="utf-8")
+    return pd.read_csv("attendance_summary_final_v1.0_250726.csv", encoding="utf-8")
 
 # 파일 업로드 또는 기본 파일 불러오기
 uploaded_file = st.file_uploader("📂 참석 CSV 파일 업로드", type=["csv"])
