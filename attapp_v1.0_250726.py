@@ -11,7 +11,7 @@ import os
 
 # ---------- 폰트 설정 ----------
 if platform.system() == 'Linux':
-    rc('font', family='NanumGothic')
+    rc('font', family='NanumSquare')
 
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
