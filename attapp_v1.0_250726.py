@@ -4,13 +4,25 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.font_manager as fm
 import io
+import platform
+
 
 # ---------- 폰트 설정 ----------
-font_path = "C:/Windows/Fonts/malgun.ttf"  
-font_prop = fm.FontProperties(fname=font_path)
-plt.rcParams['font.family'] = font_prop.get_name()
+#font_path = "C:/Windows/Fonts/malgun.ttf"  
+#font_prop = fm.FontProperties(fname=font_path)
+#plt.rcParams['font.family'] = font_prop.get_name()
+#plt.rcParams['axes.unicode_minus'] = False
+#sns.set(style="whitegrid")
+# OS에 따라 폰트 자동 선택
+if platform.system() == "Windows":
+    font_name = "Malgun Gothic"
+elif platform.system() == "Darwin":  # macOS
+    font_name = "AppleGothic"
+else:  # Linux (Streamlit Cloud)
+    font_name = "DejaVu Sans"
+
+plt.rcParams['font.family'] = font_name
 plt.rcParams['axes.unicode_minus'] = False
-sns.set(style="whitegrid")
 
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
