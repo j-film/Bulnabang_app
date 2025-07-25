@@ -28,6 +28,7 @@ plt.rcParams['axes.unicode_minus'] = False
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
 st.title("🤸‍♀️ 불나방 대시보드 📊")
+st.write("📌 적용된 폰트:", plt.rcParams['font.family'])
 
 # 🔧 스타일 설정 슬라이더
 st.sidebar.header("⚙️ 그래프 스타일 설정")
