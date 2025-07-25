@@ -5,6 +5,8 @@ import seaborn as sns
 import matplotlib.font_manager as fm
 import io
 import platform
+import os
+
 
 
 # ---------- 폰트 설정 ----------
@@ -13,15 +15,14 @@ import platform
 #plt.rcParams['font.family'] = font_prop.get_name()
 #plt.rcParams['axes.unicode_minus'] = False
 #sns.set(style="whitegrid")
-# OS에 따라 폰트 자동 선택
-if platform.system() == "Windows":
-    font_name = "Malgun Gothic"
-elif platform.system() == "Darwin":  # macOS
-    font_name = "AppleGothic"
-else:  # Linux (Streamlit Cloud)
-    font_name = "DejaVu Sans"
 
-plt.rcParams['font.family'] = font_name
+font_path = os.path.join('fonts', 'NanumSquareB.ttf')
+if os.path.exists(font_path):
+    font_prop = fm.FontProperties(fname=font_path)
+    plt.rcParams['font.family'] = font_prop.get_name()
+else:
+    plt.rcParams['font.family'] = 'DejaVu Sans'
+
 plt.rcParams['axes.unicode_minus'] = False
 
 # ---------- Streamlit 앱 ----------
