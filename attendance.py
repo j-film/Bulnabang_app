@@ -1,65 +1,56 @@
 import streamlit as st
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 
-# --------------------------
-# 데이터: 날짜별 참석자 목록
-# --------------------------
-attendance_by_date = {
-    "7/28 (월) 사주": ["키키 90 서울", "으닝 92 서울", "생강 93 서울", "튜브 94 경기", "이불 91 서울", "선선 88 서울"],
-    "7/19 (토) 종로노포": ["튜브 94 경기", "으닝 92 서울", "앰버 86 경기", "렌 93 경기", "키키 90 서울", "이불 91 서울", "라이 87 서울"],
-    "7/12 (토) 이자카야": ["렌 93 경기", "앰버 86 경기"],
-    "7/12 (토) 론뮤익전시": ["선선 88 서울", "까악 90 경기", "수도 92 인천"],
-    "7/11 (금) 마곡피자": ["수도 92 인천", "키키 90 서울", "우롱 92 서울", "까악 90 경기", "이틀 91 경기", "나물 92 서울", "튜브 94 경기"],
-    "7/10 (목) 점심꺼거": ["수도 92 인천", "흥치 96 경기"],
-    "7/6 (일) 공포전시": ["네오 92 서울", "우롱 92 서울", "으닝 92 서울", "이불 91 서울", "앰버 86 경기", "키키 90 서울", "마키 96 경기", "나물 92 서울"],
-    "7/5 (토) 관악산일출": ["까악 90 경기", "렌 93 경기", "홍시 94 경기", "부엉 93 경기"]
-}
+# 데이터 불러오기
+df = pd.read_csv("attendance_summary.csv")
 
-# --------------------------
-# 데이터 전처리
-# --------------------------
-records = []
-for date, people in attendance_by_date.items():
-    for person in people:
-        if '총총' not in person and '콜라' not in person:
-            records.append({"모임날짜": date, "참석자": person})
+# 기본 설정
+st.set_page_config(layout="wide", page_title="불나방 출석 리포트", page_icon="🔥")
+st.title("🔥 불나방 모임 출석 리포트")
+st.markdown("출석자별 / 월별 / 모임 성격별 활동 내역을 시각화한 리포트입니다.")
 
-df = pd.DataFrame(records)
-df["월"] = df["모임날짜"].str.extract(r"(\d+)/")[0] + "월"
+# 전체 참석자 총 횟수
+st.subheader("👥 참석자별 총 참석 횟수")
+total = df.groupby("참석자")["횟수"].sum().reset_index().sort_values("횟수", ascending=False)
+fig1, ax1 = plt.subplots(figsize=(12, 6))
+sns.barplot(x="참석자", y="횟수", data=total, palette="viridis", ax=ax1)
+for i, row in total.iterrows():
+    ax1.text(i, row["횟수"] + 0.1, f'{row["횟수"]}회', ha='center', va='bottom', fontsize=8)
+ax1.set_ylabel("횟수")
+plt.xticks(rotation=45)
+st.pyplot(fig1)
 
-# --------------------------
-# UI 구성
-# --------------------------
-st.title("🎉 7월 모임 참석자 관리")
+# 월별 참석자 그래프 (6월/7월 서브플롯)
+st.subheader("📅 월별 참석자별 참석 횟수")
+fig2, (ax2_1, ax2_2) = plt.subplots(2, 1, figsize=(14, 10), sharex=True)
+for month, ax in zip(["6월", "7월"], [ax2_1, ax2_2]):
+    data = df[df["월"] == month]
+    grouped = data.groupby("참석자")["횟수"].sum().reset_index()
+    sns.barplot(x="참석자", y="횟수", data=grouped, ax=ax, palette="Set2" if month == "6월" else "autumn")
+    ax.set_title(f"🗓️ {month} 참석자별 참석 횟수")
+    ax.set_ylabel("횟수")
+    for bar in ax.patches:
+        height = bar.get_height()
+        if height > 0:
+            ax.annotate(f'{int(height)}', (bar.get_x() + bar.get_width() / 2, height + 0.1),
+                        ha='center', va='bottom', fontsize=8)
+    ax.tick_params(axis='x', rotation=45)
+plt.tight_layout()
+st.pyplot(fig2)
 
-# 1️⃣ 모임별 참석자 표 보기 (피벗 형태)
-st.subheader("📅 모임별 참석자 목록")
-grouped = df.groupby("모임날짜")["참석자"].apply(lambda x: ", ".join(sorted(x))).reset_index()
-st.dataframe(grouped, use_container_width=True)
+# 성격별 분석
+st.subheader("🎨 참석자별 모임 성격 분포")
+pivot = df.pivot_table(index="참석자", columns="분류", values="횟수", aggfunc="sum").fillna(0)
+fig3, ax3 = plt.subplots(figsize=(14, 8))
+pivot.plot(kind="bar", stacked=True, ax=ax3, colormap="tab20c", edgecolor="black")
+ax3.set_ylabel("횟수")
+ax3.set_xlabel("참석자")
+ax3.set_title("🌈 모임 성격별 참석 분포")
+plt.xticks(rotation=45)
+plt.legend(title="모임 성격", bbox_to_anchor=(1.05, 1), loc="upper left")
+st.pyplot(fig3)
 
-# 2️⃣ 참석자별 참석 횟수
-st.subheader("📊 참석자별 참석 횟수 (표 + 그래프)")
-summary = df["참석자"].value_counts().reset_index()
-summary.columns = ["참석자", "참석 횟수"]
-st.dataframe(summary)
-
-# 그래프
-fig, ax = plt.subplots(figsize=(8, 6))
-ax.barh(summary["참석자"], summary["참석 횟수"], color="teal")
-ax.set_xlabel("참석 횟수")
-ax.set_title("참석자별 총 참석 횟수")
-ax.invert_yaxis()
-st.pyplot(fig)
-
-# 3️⃣ 참석자별 월별 그래프
-st.subheader("📈 참석자별 월별 참석 현황")
-monthly = df.groupby(["월", "참석자"]).size().reset_index(name="횟수")
-pivot = monthly.pivot(index="참석자", columns="월", values="횟수").fillna(0)
-st.bar_chart(pivot)
-
-# 4️⃣ 개별 참석자 필터
-st.subheader("🔍 특정 참석자 보기")
-name = st.selectbox("참석자 선택", sorted(df["참석자"].unique()))
-st.write(f"**{name}**의 참석 모임:")
-st.dataframe(df[df["참석자"] == name][["모임날짜"]])
+# 요약
+st.markdown("✅ 현재 데이터는 6~7월 참석 기준이며, 이후 월별 데이터도 추가 가능합니다.")
