@@ -4,13 +4,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # 데이터 불러오기
-df = pd.read_csv("attendance_summary.csv")
+df = pd.read_csv("attendance_summary_final_utf8sig.csv")
 
 # 기본 설정
 st.set_page_config(layout="wide", page_title="불나방 출석 리포트", page_icon="🔥")
-st.title("🔥 불나방 모임 출석 리포트")
-st.markdown("출석자별 / 월별 / 모임 성격별 활동 내역을 시각화한 리포트입니다.")
-
+st.title("🔥 불나방 모임 출석 리포트 🔥")
+st.markdown("25년 6월부터 출석자별 / 월별 / 모임 성격별 활동 내역 리포트")
+st.markdown("심심해서 만들어봤을까악")
 # 전체 참석자 총 횟수
 st.subheader("👥 참석자별 총 참석 횟수")
 total = df.groupby("참석자")["횟수"].sum().reset_index().sort_values("횟수", ascending=False)
