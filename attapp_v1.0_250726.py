@@ -6,12 +6,23 @@ import matplotlib.font_manager as fm
 import io
 import platform
 import os
+from matplotlib import rc
 
 
 
 # ---------- 폰트 설정 ----------
-if platform.system() == 'Linux':
-    rc('font', family='NanumSquare')
+# 1️⃣ 폰트 경로
+font_path = os.path.join("fonts", "NanumSquareB.ttf")
+
+# 2️⃣ 등록 + 강제 지정
+if os.path.exists(font_path):
+    fm.fontManager.addfont(font_path)
+    nanum_font = fm.FontProperties(fname=font_path)
+    plt.rcParams['font.family'] = nanum_font.get_name()
+else:
+    plt.rcParams['font.family'] = 'DejaVu Sans'
+
+plt.rcParams['axes.unicode_minus'] = False
 
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
