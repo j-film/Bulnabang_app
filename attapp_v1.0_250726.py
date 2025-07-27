@@ -200,7 +200,10 @@ if df is not None:
     st.subheader("4️⃣ 참석 내역 보기")
 
     참석자_list = df['참석자'].unique().tolist()
-    selected_person = st.selectbox("🔍 인원을 선택하세요", 참석자_list)
+    selected_person = st.selectbox(
+    "🔍 인원을 선택하세요",
+    options=["-- 선택하세요 --"] + 참석자_list,
+    index=0)
 
     if selected_person:
         # 선택된 사람의 전체 내역 필터링
