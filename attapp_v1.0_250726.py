@@ -94,7 +94,7 @@ if df is not None:
             #break
     #plt.rcParams['axes.unicode_minus'] = False
     
-    fontprop = fm.FontProperties(fname='fonts/NanumSquareB.ttf')
+    fontprop = fm.FontProperties(fname='NanumGothic.ttf')
     plt.rcParams['axes.unicode_minus'] = False
 
     st.subheader("1️⃣ 전체 참석 현황")
