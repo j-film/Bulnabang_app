@@ -95,7 +95,7 @@ if df is not None:
     #plt.rcParams['axes.unicode_minus'] = False
     
     fontprop = fm.FontProperties(fname='fonts/NanumSquareB.ttf')
-    matplotlib.rcParams['axes.unicode_minus'] = False
+    plt.rcParams['axes.unicode_minus'] = False
 
     st.subheader("1️⃣ 전체 참석 현황")
     total_df = df_summary.groupby('참석자')['횟수'].sum().reset_index().sort_values(by='횟수', ascending=False)
