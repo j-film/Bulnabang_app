@@ -188,6 +188,27 @@ if df is not None:
 
     plt.tight_layout()
     st.pyplot(fig4)
+    
+    # 4️⃣ 특정 인원 참석 내역 보기
+st.subheader("4️⃣ 참석 내역 보기")
+
+# 유니크 참석자 목록 만들기
+참석자_list = df['참석자'].unique().tolist()
+selected_person = st.selectbox("🔍 인원을 선택하세요", 참석자_list)
+
+if selected_person:
+    # 선택된 사람의 월별 참석 내역 필터링
+    person_df = df[df['참석자'] == selected_person].copy()
+
+    # 월별로 정리해서 보여주기
+    grouped = person_df.groupby(['월', '분류'])['참석자'].count().reset_index(name='횟수')
+    
+    st.write(f"✅ **{selected_person}**님의 참석 내역 (월별 & 분류별):")
+    
+    # 월별로 나눠서 보여주기
+    for month in sorted(grouped['월'].unique()):
+        st.markdown(f"### 📅 {month}월")
+        st.dataframe(grouped[grouped['월'] == month][['분류', '횟수']].reset_index(drop=True))
 
 else:
     st.info("👆 위에 CSV 파일을 업로드하거나 '기본 내장 CSV 불러오기' 버튼을 눌러주세요.")
