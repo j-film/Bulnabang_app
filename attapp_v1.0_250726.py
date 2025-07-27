@@ -36,8 +36,8 @@ plt.rcParams['axes.unicode_minus'] = False
 st.set_page_config(layout="wide")
 st.title("🤸‍♀️ 불나방 대시보드 📊")
 
-st.write("📌 적용된 폰트:", plt.rcParams['font.family'])
-st.write("📁 현재 폰트 경로 존재?:", os.path.exists("fonts/NanumSquareB.ttf"))
+#st.write("📌 적용된 폰트:", plt.rcParams['font.family'])
+#st.write("📁 현재 폰트 경로 존재?:", os.path.exists("fonts/NanumSquareB.ttf"))
 
 # 🔧 스타일 설정 슬라이더
 st.sidebar.header("⚙️ 그래프 스타일 설정")
@@ -212,7 +212,7 @@ if df is not None:
         for month in sorted(person_df['월'].unique()):
             st.markdown(f"### 📅 {month}")
             month_df = person_df[person_df['월'] == month]
-            st.dataframe(month_df[['월', '일', '소모', '분류']].reset_index(drop=True))
+            st.dataframe(month_df[['월', '일', '소모임', '분류']].reset_index(drop=True))
             
 else:
     st.info("👆 위에 CSV 파일을 업로드하거나 '기본 내장 CSV 불러오기' 버튼을 눌러주세요.")
