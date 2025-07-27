@@ -12,17 +12,17 @@ from matplotlib import rc
 
 # ---------- 폰트 설정 ----------
 # 1️⃣ 폰트 경로
-font_path = os.path.join("fonts", "NanumSquareB.ttf")
+#font_path = os.path.join("fonts", "NanumSquareB.ttf")
 
 # 2️⃣ 등록 + 강제 지정
-if os.path.exists(font_path):
-    fm.fontManager.addfont(font_path)
-    nanum_font = fm.FontProperties(fname=font_path)
-    plt.rcParams['font.family'] = nanum_font.get_name()
-else:
-    plt.rcParams['font.family'] = 'DejaVu Sans'
+#if os.path.exists(font_path):
+    #fm.fontManager.addfont(font_path)
+    #nanum_font = fm.FontProperties(fname=font_path)
+    #plt.rcParams['font.family'] = nanum_font.get_name()
+#else:
+    #plt.rcParams['font.family'] = 'DejaVu Sans'
 
-plt.rcParams['axes.unicode_minus'] = False
+#plt.rcParams['axes.unicode_minus'] = False
 
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
@@ -94,7 +94,7 @@ if df is not None:
             #break
     #plt.rcParams['axes.unicode_minus'] = False
     
-    fontprop = fm.FontProperties(fname='NanumSquareB.ttf')
+    fontprop = fm.FontProperties(fname='fonts\NanumSquareB.ttf')
     matplotlib.rcParams['axes.unicode_minus'] = False
 
     st.subheader("1️⃣ 전체 참석 현황")
