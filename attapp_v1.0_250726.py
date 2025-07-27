@@ -34,8 +34,8 @@ plt.rcParams['axes.unicode_minus'] = False
 
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
-st.title("🔥불나방 대시보드📊")
-
+st.title("🔥불나방 대시보드")
+st.write("심심해서 만들어볼까악 🐦‍⬛📊 250727, ver.1.0")
 #st.write("📌 적용된 폰트:", plt.rcParams['font.family'])
 #st.write("📁 현재 폰트 경로 존재?:", os.path.exists("fonts/NanumSquareB.ttf"))
 
