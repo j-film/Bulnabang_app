@@ -24,6 +24,14 @@ from matplotlib import rc
 
 #plt.rcParams['axes.unicode_minus'] = False
 
+# 경로 설정 (Streamlit Cloud에서도 작동 가능)
+font_path = os.path.join("fonts", "NanumSquareB.ttf")
+font_prop = fm.FontProperties(fname=font_path)
+
+# 전체 matplotlib 폰트 설정 적용
+plt.rcParams['font.family'] = font_prop.get_name()
+plt.rcParams['axes.unicode_minus'] = False
+
 # ---------- Streamlit 앱 ----------
 st.set_page_config(layout="wide")
 st.title("🤸‍♀️ 불나방 대시보드 📊")
@@ -94,19 +102,20 @@ if df is not None:
             #break
     #plt.rcParams['axes.unicode_minus'] = False
     
-    fontprop = fm.FontProperties(fname='NanumGothic.ttf')
-    plt.rcParams['axes.unicode_minus'] = False
+    #fontprop = fm.FontProperties(fname='NanumGothic.ttf')
+    #plt.rcParams['axes.unicode_minus'] = False
 
     st.subheader("1️⃣ 전체 참석 현황")
     total_df = df_summary.groupby('참석자')['횟수'].sum().reset_index().sort_values(by='횟수', ascending=False)
 
+    plt.rcParams['font.family'] = font_prop.get_name()
     fig1, ax1 = plt.subplots(figsize=(12, 5))
     bars = ax1.bar(total_df['참석자'], total_df['횟수'], color=palette)
     for bar in bars:
         height = bar.get_height()
         ax1.text(bar.get_x() + bar.get_width()/2, height, f'{int(height)}', ha='center', va='bottom', fontsize=fontsize_bar)
-    ax1.set_ylabel("횟수", fontsize=fontsize_label)
-    ax1.tick_params(axis='x', labelrotation=0, labelsize=fontsize_tick)
+    ax1.set_ylabel("횟수", fontsize=fontsize_label, fontproperties=font_prop)
+    ax1.tick_params(axis='x', labelrotation=0, labelsize=fontsize_tick, fontproperties=font_prop)
     ax1.tick_params(axis='y', labelsize=fontsize_ytick)
     ax1.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: int(x)))
     st.pyplot(fig1)
@@ -124,9 +133,9 @@ if df is not None:
         ax = axes[i]
         data = df_summary[df_summary['월'] == month].set_index('참석자').reindex(all_members).fillna(0)
         bars = ax.bar(data.index, data['횟수'], color=palette)
-        ax.set_title(f"{month} 참석 현황", fontsize=fontsize_title)
-        ax.set_ylabel("횟수", fontsize=fontsize_label)
-        ax.tick_params(axis='x', labelrotation=0, labelsize=fontsize_tick)
+        ax.set_title(f"{month} 참석 현황", fontsize=fontsize_title, fontproperties=font_prop)
+        ax.set_ylabel("횟수", fontsize=fontsize_label, fontproperties=font_prop)
+        ax.tick_params(axis='x', labelrotation=0, labelsize=fontsize_tick, fontproperties=font_prop)
         ax.tick_params(axis='y', labelsize=fontsize_ytick)
         ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: int(x)))
 
@@ -162,10 +171,10 @@ if df is not None:
         ax = axes[i]
         data = 분류별[분류별['분류'] == 분류].set_index('참석자').reindex(all_members).fillna(0)
         bars = ax.bar(data.index, data['횟수'], color=palette)
-        ax.set_title(f"{분류} 참석 현황", fontsize=fontsize_title)
-        ax.set_ylabel("횟수", fontsize=fontsize_label)
+        ax.set_title(f"{분류} 참석 현황", fontsize=fontsize_title, fontproperties=font_prop)
+        ax.set_ylabel("횟수", fontsize=fontsize_label, fontproperties=font_prop)
         ax.set_ylim(0, max_y + 1)
-        ax.tick_params(axis='x', labelrotation=0, labelsize=fontsize_tick)
+        ax.tick_params(axis='x', labelrotation=0, labelsize=fontsize_tick, fontproperties=font_prop)
         ax.tick_params(axis='y', labelsize=fontsize_ytick)
         ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: int(x)))
 
