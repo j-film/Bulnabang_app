@@ -67,6 +67,10 @@ all_members = [name.strip() for name in custom_order.split(",") if name.strip() 
 def load_default_csv():
     return pd.read_csv("attendance_summary_final_v1.0_250726.csv", encoding="utf-8")
 
+# 세션 상태에 df 저장
+if "df" not in st.session_state:
+    st.session_state.df = None
+
 # 파일 업로드 또는 기본 파일 불러오기
 uploaded_file = st.file_uploader("📂 참석 CSV 파일 업로드", type=["csv"])
 use_default = st.button("📎 기본 내장 CSV 불러오기")
@@ -76,10 +80,12 @@ if uploaded_file is not None:
         df = pd.read_csv(uploaded_file, encoding='utf-8')
     except UnicodeDecodeError:
         df = pd.read_csv(uploaded_file, encoding='cp949')
+    st.session_state.df = df  # ✅ 저장
 elif use_default:
     df = load_default_csv()
+    st.session_state.df = df  # ✅ 저장
 else:
-    df = None
+    df = st.session_state.df  # ✅ 유지
 
 if df is not None:
     # 횟수 계산
