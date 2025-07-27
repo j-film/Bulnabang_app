@@ -203,18 +203,16 @@ if df is not None:
     selected_person = st.selectbox("🔍 인원을 선택하세요", 참석자_list)
 
     if selected_person:
-        # 선택된 사람의 월별 참석 내역 필터링
+        # 선택된 사람의 전체 내역 필터링
         person_df = df[df['참석자'] == selected_person].copy()
 
-        # 월별로 정리해서 보여주기
-        grouped = person_df.groupby(['월', '분류'])['참석자'].count().reset_index(name='횟수')
+        st.write(f"✅ **{selected_person}** 참석 상세 내역")
 
-        st.write(f"✅ **{selected_person}**참석 내역 (월별 & 분류별):")
-
-        # 월별로 나눠서 보여주기
-        for month in sorted(grouped['월'].unique()):
-            st.markdown(f"### 📅 {month}월")
-            st.dataframe(grouped[grouped['월'] == month][['분류', '횟수']].reset_index(drop=True))
+        # 월별로 나눠서 출력
+        for month in sorted(person_df['월'].unique()):
+            st.markdown(f"### 📅 {month}")
+            month_df = person_df[person_df['월'] == month]
+            st.dataframe(month_df[['월', '일', '소모', '분류']].reset_index(drop=True))
             
 else:
     st.info("👆 위에 CSV 파일을 업로드하거나 '기본 내장 CSV 불러오기' 버튼을 눌러주세요.")
