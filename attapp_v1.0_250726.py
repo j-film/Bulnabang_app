@@ -85,14 +85,17 @@ if df is not None:
     all_members = list(dict.fromkeys(all_members))  # 중복 제거
 
     # 폰트 설정
-    font_paths = fm.findSystemFonts(fontpaths=None, fontext='ttf')
-    font_prop = None
-    for path in font_paths:
-        if 'NanumGothic' in path or 'Malgun' in path:
-            font_prop = fm.FontProperties(fname=path)
-            plt.rcParams['font.family'] = font_prop.get_name()
-            break
-    plt.rcParams['axes.unicode_minus'] = False
+    #font_paths = fm.findSystemFonts(fontpaths=None, fontext='ttf')
+    #font_prop = None
+    #for path in font_paths:
+        #if 'NanumGothic' in path or 'Malgun' in path:
+            #font_prop = fm.FontProperties(fname=path)
+            #plt.rcParams['font.family'] = font_prop.get_name()
+            #break
+    #plt.rcParams['axes.unicode_minus'] = False
+    
+    fontprop = fm.FontProperties(fname='NanumSquareB.ttf')
+    matplotlib.rcParams['axes.unicode_minus'] = False
 
     st.subheader("1️⃣ 전체 참석 현황")
     total_df = df_summary.groupby('참석자')['횟수'].sum().reset_index().sort_values(by='횟수', ascending=False)
